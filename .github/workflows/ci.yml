@@ -1,40 +1,27 @@
-name: React CI Build
-
-# 1. WHEN SHOULD THIS RUN?
-on:
-  push:
-    branches: [ "main" ] # Runs when you push to main
-  pull_request:
-    branches: [ "main" ] # Runs when you create a PR to main
-
-# 2. WHAT SHOULD IT DO?
 jobs:
   build:
-    runs-on: ubuntu-latest # Boots up a temporary Linux server
-    # ADD THESE THREE LINES:
+    runs-on: ubuntu-latest
+    
     defaults:
       run:
         working-directory: ./ReactAiChatBot
+
     steps:
-    # Step A: Get your code from GitHub
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Step B: Install Node.js on the server
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: 18.x # Change this if you use Node 16 or 20
-        cache: 'npm' # Speeds up future builds
+        node-version: 18.x
+        cache: 'npm'
+        cache-dependency-path: './ReactAiChatBot/package-lock.json' # <-- ADD THIS LINE
 
-    # Step C: Install your project dependencies
     - name: Install dependencies
-      run: npm ci # 'npm ci' is strictly for automated environments, faster than 'npm install'
+      run: npm ci
 
-    # Step D: Build the React project
     - name: Build the app
       run: npm run build --if-present
 
-    # Step E: Run tests (if you have them)
     - name: Run tests
-      run: npm test -- --passWithNoTests # Prevents failure if you haven't written tests yet
+      run: npm test -- --passWithNoTests
