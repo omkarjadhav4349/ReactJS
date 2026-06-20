@@ -11,7 +11,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # Boots up a temporary Linux server
-
+# ADD THESE THREE LINES:
+    defaults:
+      run:
+        working-directory: ./ReactAiChatBot
     steps:
     # Step A: Get your code from GitHub
     - name: Checkout repository
